@@ -10,5 +10,6 @@ namespace _2xBetCore.Interfaces
    public interface IUserGeneretic:IAbstractRepository<User>
     {
         User Get(string username);
+        bool Exists(string username);
     }
 }

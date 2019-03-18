@@ -23,19 +23,44 @@ namespace _2xBetCore.Controllers
         {
             _repos = repository;
         }
+
+
         [HttpGet("{login}")]
-        public void Login([FromBody]string username)
+        public ActionResult Login([FromBody]UserForLoginDTO userForLogin)
         {
-            var user = _repos.Get(username);
+            var user = _repos.Get(userForLogin.UserName.ToLower());
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+
+            return Ok();
 
         }
-        // Чисто для проверки,все работает :3
-        [HttpGet("{getall}")]
-        public User GetSmth(string username)
+
+        //TODO: CalBack to Email
+       public ActionResult Register([FromBody]UserForRegisterDTO userForRegister)
         {
-            var td = _repos.Get(username);
-            return td;
+            userForRegister.UserName = userForRegister.UserName.ToLower();
+
+            if (_repos.Exists(userForRegister.UserName))
+            {
+                return BadRequest("Already have this user");
+            }
+
+            var CreateUser = new User
+            {
+                Login = userForRegister.UserName,
+                Email = userForRegister.Email,
+                Password = userForRegister.Password
+            };
+
+            var CreatedUser = _repos.Create(CreateUser);
+
+            return StatusCode(201);
         }
+       
 
     }
 }

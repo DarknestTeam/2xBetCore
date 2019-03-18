@@ -14,10 +14,11 @@ namespace _2xBetCore.Data
         {
             _context = context;
         }
-        public void Create(T item)
+        public T Create(T item)
         {
             _context.Set<T>().Add(item);
             _context.SaveChanges();
+            return item;
         }
 
         public IQueryable<T> GetAll()

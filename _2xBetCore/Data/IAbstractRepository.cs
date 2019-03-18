@@ -9,7 +9,7 @@ namespace _2xBetCore.Data
     {
         IQueryable<T> GetAll();
       
-        void Create(T item);
+        T Create(T item);
        
         void Update(T item);
 
